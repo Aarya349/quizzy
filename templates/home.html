@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quizzy -- Home
+{% endblock %}
+
+{% block style %}
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            background-image: url("{{ url_for('static', filename='images/bg2.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            margin-top: 10px;
+            border-radius: 10px;
+            width: 100%;
+        }
+        .description {
+            background-color: rgba(0, 0, 0, 0.671);
+            width: 60%;
+            text-align: center;
+            color: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            margin-top: 15px
+        }
+
+        .btn {
+            margin: 10px;
+            text-decoration: none;
+            padding: 7px;
+            background-color: rgb(20, 172, 218);
+        }
+
+        .btn:hover {
+            background-color: rgb(17, 141, 179);
+            color: white;
+        }
+
+        .description a{
+            font-size: 20px;
+            color: rgb(195, 218, 20);
+            border-radius: 5px;
+        }
+        .image-gallery{
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .image-gallery img{
+            border-radius: 10px;
+            border-color: rgb(195, 218, 20);
+            box-shadow: 3px 3px 4px 4px rgb(13, 142, 198);
+            border-width: 2px;
+            border-style: solid;
+        }
+        .footer{
+            display: flex;
+            flex-direction: row;
+            background-color: rgba(27, 10, 10, 0.671);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .footer div{
+            margin-right: 20px;
+        }
+        .footer-summary ul{
+            list-style-type: none;
+            margin-right: 100px;
+            
+        }
+        .footer-summary ul li{
+            margin-bottom: 15px;
+            color: rgb(195, 218, 20);
+            transition: color 0.3s ease;
+        }
+
+        .footer-summary ul li:hover{
+            color: rgb(212, 218, 220);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .vertical-line{
+            border-left: 1px solid rgba(233, 233, 233, 0.497);
+            margin-left: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="description">
+        <h1>Welcome to Quizzy!</h1>
+        <p>The ultimate platform to test your knowledge and challenge yourself with exciting quizzes.</p>
+        <a href="{{ url_for('register') }}" class="btn">Register to start</a>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+    </div>
+</div>
+<div class="image-gallery">
+    <img src="{{ url_for('static', filename='images/quiz1.webp') }}" alt="quiz1" width="300" height="200">
+    <img src="{{ url_for('static', filename='images/quiz2.jpg') }}" alt="quiz2" width="300" height="200">
+    <img src="{{ url_for('static', filename='images/quiz3.jpeg') }}" alt="quiz3" width="300" height="200">
+</div><br>
+<div class="image-gallery">
+    <img src="{{ url_for('static', filename='images/quiz4.webp') }}" alt="quiz3" width="350" height="250">
+    <img src="{{ url_for('static', filename='images/quiz6.jpg') }}" alt="quiz4" width="350" height="250">
+    <img src="{{ url_for('static', filename='images/quiz5.webp') }}" alt="quiz5" width="350" height="250">
+</div><br> <hr>
+<div class="footer">
+    <div class="footer-feature" style="margin-right: 30px;">
+        <h2><u>Features:</u></h2>
+        <ul style="list-style-type: none;">
+            <li>✨ Register and login to start taking quizzes</li>
+            <li>✨ Take quizzes from various categories</li>
+            <li>✨ View your quiz history</li>
+            <li>✨ View your quiz performance</li>
+            <li>✨ View your quiz results</li>
+            <li>✨ View your quiz scores</li>
+        </ul>
+    </div>
+    <div class="vertical-line"></div>
+    
+    <img src="{{ url_for('static', filename='images/img1.jpeg') }}" alt="Quizzy" width="60" height="60" style="border-radius: 15px;">
+
+    <div class="footer-summary" style="margin-left: 20px;">
+        <ul>
+            <li>About Us</li>
+            <li>Quizzy</li>
+            <li>Contact</li>
+            <li>Support</li>
+            <li>Quizzes</li>
+        </ul>
+    </div> 
+    <div class="vertical-line"></div>
+    <div class="footer-summary">
+        <ul>
+            <li>Privacy Policy</li>
+            <li>Terms of Service</li>
+            <li>Cookie Policy</li>
+            <li>Disclaimer</li>
+            <li>FAQs</li>
+        </ul>
+    </div>
+    <div class="vertical-line"></div>
+    
+    <div style="margin-left: 50px;">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <h2>Follow Us:</h2>
+        <a href="https://www.facebook.com" style="color: rgb(20, 136, 218);"><i class="fab fa-facebook-square fa-2x"></i></a>
+        <a href="https://www.twitter.com" style="color: rgb(20, 136, 218);"><i class="fab fa-twitter-square fa-2x"></i></a>
+        <a href="https://www.instagram.com" style="color: #e13f4c;"><i class="fab fa-instagram-square fa-2x"></i></a>
+        <a href="https://www.linkedin.com/in/ankit-kumar-5aaa59314/" style="color: #116bca;"><i class="fab fa-linkedin fa-2x"></i></a>
+        <a href="https://github.com/23f3000080/quizzy-test" style="color: #1d1d1b;"><i class="fab fa-github fa-2x"></i></a>
+    </div>
+</div>
+<footer>
+    <p style="text-align: center; color: white; background-color: rgba(242, 117, 117, 0.671); padding: 10px; border-radius: 10px; color:rgb(84, 4, 4);">&copy; 2025 Quizzy. All Rights Reserved.</p>
+</footer>
+{% endblock %}

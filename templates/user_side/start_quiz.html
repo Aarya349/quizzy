@@ -1,0 +1,104 @@
+{% extends 'user_side/user_dashboard.html' %}
+
+{% block title %}
+    Quiz
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background: linear-gradient(to right, #f8f9fa, #e0eafc);
+        }
+        .quiz-info {
+            background-color: #d1e7dd;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .quiz-info p {
+            margin-bottom: 3px;
+        }
+        #timer {
+            background-color: #f8d7da;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Quiz</h2>
+
+        <div class="row mb-4 align-items-center quiz-info">
+            <div class="col-md-6">
+                <p class="fw-semibold">Quiz ID: {{ quiz.quizId }}</p>
+                <p class="fw-semibold">Quiz Name: {{ quiz.title }}</p>
+                <p class="fw-semibold">Subject: {{ quiz.subject.sub_name }}</p>
+            </div>
+            <div class="col-md-4">
+                <p class="fw-semibold">Chapter: {{ quiz.chapter.chapter_name }}</p>
+                <p class="fw-semibold">Number of Questions: {{ quiz.number_of_questions }}</p>
+                <p class="fw-semibold">Duration: {{ quiz.duration }} minutes</p>
+            </div>
+            <div class="col-md-2 text-end">
+                <span id="timer" class="fs-6 fw-bold text-danger">Time left: </span>
+            </div>
+        </div>
+
+        <form id="quizForm" action="{{ url_for('submit_quiz', quiz_id=quiz.id) }}" method="POST">
+            {% for question in questions %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <p class="card-title fs-5 fw-semibold">Q{{ loop.index }}: {{ question.title }}</p>
+                    
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_A" name="question_{{ question.id }}" value="1" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_A">{{ question.option1 }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_B" name="question_{{ question.id }}" value="2" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_B">{{ question.option2 }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_C" name="question_{{ question.id }}" value="3" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_C">{{ question.option3 }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="q{{ question.id }}_D" name="question_{{ question.id }}" value="4" class="form-check-input" required>
+                        <label class="form-check-label" for="q{{ question.id }}_D">{{ question.option4 }}</label>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary w-100 mb-4">Submit Quiz</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let time = {{ quiz.duration }} * 60;
+    let timer = document.getElementById('timer');
+
+    function countdown() {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+
+        timer.textContent = `Time left: ${minutes}m ${seconds}s`;
+
+        if (time === 0) {
+            clearInterval(interval);
+            alert('Time is up! Quiz submitted.');
+            document.getElementById('quizForm').submit();
+            setTimeout(() => {
+                window.location.href = "{{ url_for('user_dashboard') }}";
+            }, 3000);  // Wait 3 seconds before redirecting
+        } else {
+            time--;
+        }
+    }
+
+    let interval = setInterval(countdown, 1000);
+</script>
+{% endblock %}

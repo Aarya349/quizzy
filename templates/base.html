@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    {% block style %}
+            
+    {% endblock %}
+</head>
+<body>
+    {% include 'nav.html'   %}
+    {% include 'flash.html'   %}
+    <!-- body content -->
+    {% block content %}
+        
+    {% endblock %}
+
+    <!-- Scripts -->
+    {% block script %}
+        
+    {% endblock %}
+</body>
+</html>

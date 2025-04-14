@@ -1,0 +1,104 @@
+{% extends 'admin_side/admin_dashboard.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Search Results for "{{ search_query }}"</h3>
+
+    {% if results.users or results.subjects or results.chapters or results.quizzes %}
+    <div class="list-group">
+
+        {% if results.users %}
+                <h5 class="mt-3">Users</h5>
+                {% for user in results.users %}
+                    <div class="list-group-item rounded mb-2" style="width: 70%;">
+                        <strong>Username:</strong> {{ user.username }} <br>
+                        <strong>Name:</strong> {{ user.name }} <br>
+                        <strong>Qualification:</strong> {{ user.qualification }} <br>
+                        <strong>DOB:</strong> {{ user.dob }} <br>
+                        <strong>Role:</strong> 
+                        {% if user.is_admin %}
+                            <span class="text-danger">Admin</span>
+                        {% else %}
+                            <span class="text-success">User</span>
+                        {% endif %}
+
+                        {% if not user.is_admin and results.user_attempts.get(user.id) %}
+                            <h6 class="mt-2">Quiz Attempts</h6>
+                            <ul>
+                                {% for attempt in results.user_attempts[user.id] %}
+                                    <li>
+                                        <strong>Quiz ID:</strong> {{ attempt.quiz.quizId }} <br>
+                                        <strong>Score:</strong> {{ attempt.score }} / {{ attempt.total_marks }} <br>
+                                        <strong>Total Questions:</strong> {{ attempt.total_questions }} <br>
+                                        <strong>Attempt Date:</strong> {{ attempt.quiz_attempt_date.strftime('%Y-%m-%d %H:%M:%S') }}
+                                    </li> <hr style="width: 30%;">
+                                {% endfor %}
+                            </ul>
+                        {% elif not user.is_admin %}
+                            <p class="text-muted">No quiz attempts found.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        
+
+        {% if results.subjects %}
+        <h5 class="mt-3">Subjects</h5>
+        {% for subject in results.subjects %}
+        <div class="list-group-item rounded">
+            <strong>Subject ID:</strong> {{ subject.subjectId }} <br>
+            <strong>Subject Name:</strong> {{ subject.sub_name }} <br>
+            <strong>Chapters:</strong>
+            <ul>
+                {% for chapter in subject.chapters %}
+                <li>{{ chapter.chapter_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+      
+
+        {% if results.chapters %}
+        <h5 class="mt-3">Chapters</h5>
+        {% for chapter in results.chapters %}
+        <div class="list-group-item rounded">
+            <strong>Chapter ID:</strong> {{ chapter.chapterId }} <br>
+            <strong>Chapter Name:</strong> {{ chapter.chapter_name }} <br>
+            <strong>Subject:</strong> {{ chapter.subject.sub_name }}
+        </div>
+        {% endfor %}
+
+        {% endif %}
+      
+
+        {% if results.quizzes %}
+        <h5 class="mt-3">Quizzes</h5>
+        {% for quiz in results.quizzes %}
+        <div class="list-group-item rounded">
+            <strong>Quiz ID:</strong> {{ quiz.quizId }} <br>
+            <strong>Quiz Title:</strong> {{ quiz.title }} <br>
+            <strong>Subject:</strong> {{ quiz.subject.sub_name }} <br>
+            <strong>Chapter:</strong> {{ quiz.chapter.chapter_name }} <br>
+            <strong>Number of Questions:</strong> {{ quiz.num_questions }} <br>
+            <strong>Duration:</strong> {{ quiz.duration }} minutes
+            <strong>Created at:</strong> {{ quiz.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+        </div>
+        {% endfor %}
+
+        {% endif %}
+
+        <div class="mt-3 text-center mb-3">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back</a>
+        </div>
+
+    </div>
+
+    {% else %}
+    <p class="text-muted">No results found.</p>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back</a>
+    {% endif %}
+
+</div>
+{% endblock %}

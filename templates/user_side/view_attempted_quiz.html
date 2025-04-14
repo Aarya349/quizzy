@@ -1,0 +1,60 @@
+{% extends 'user_side/user_dashboard.html' %}
+
+{% block title %}
+    Quizzy | Attempted Quiz
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4" style="background-color: rgb(140, 198, 221); border-radius:15px">
+        <h2 class="text-center mb-4"><em>Quiz - {{ quiz.id }}</em></h2>
+        
+        <div class="quiz-info card p-3 mb-4 shadow-sm" style="background-color: bisque;">
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="fw-bold">🆔 Quiz ID: <span class="fw-normal">{{ quiz.quizId }}</span></p>
+                    <p class="fw-bold">📘 Quiz Name: <span class="fw-normal">{{ quiz.title }}</span></p>
+                    <p class="fw-bold">📚 Subject: <span class="fw-normal">{{ quiz.subject.sub_name }}</span></p>
+                </div>
+                <div class="col-md-4">
+                    <p class="fw-bold">📖 Chapter: <span class="fw-normal">{{ quiz.chapter.chapter_name }}</span></p>
+                    <p class="fw-bold">✅ Number of Questions: <span class="fw-normal">{{ quiz.number_of_questions }}</span></p>
+                    <p class="fw-bold">⏳ Duration: <span class="fw-normal">{{ quiz.duration }} minutes</span></p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="fw-bold text-success">🏅 Score: <span class="fw-normal">{{ attempt.score }}</span></p>
+                    <p class="fw-bold text-danger">📍 Total Marks: <span class="fw-normal">{{ attempt.total_marks }}</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="questions-section">
+            {% for question in questions %}
+                <div class="question-card card mb-3 p-3 shadow-sm" style="background-color: rgb(190, 241, 205);">
+                    <h4 class="fw-bold">Question {{ loop.index }}:</h4>
+                    <p class="mb-2">{{ question.title }} <span class="text-primary">({{ question.marks }} marks)</span></p>
+                    <ul class="list-unstyled ms-3">
+                        <li>1. {{ question.option1 }}</li>
+                        <li>2. {{ question.option2 }}</li>
+                        <li>3. {{ question.option3 }}</li>
+                        <li>4. {{ question.option4 }}</li>
+                    </ul>
+                    <p class="fw-bold text-success">✔️ Correct Answer: <span class="fw-normal">{{ question.correct_option }}</span></p>
+                    <p class="fw-bold 
+                        {% if question.selected_option == question.correct_option %}
+                            text-success
+                        {% else %}
+                            text-danger
+                        {% endif %}">
+                        📝 Your Answer: <span class="fw-normal">{{ question.selected_option }}</span>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-4">
+        <button class="btn btn-primary me-2" onclick="window.print()">🖨️ Print this page</button>
+        <a href="{{ url_for('user_score') }}" class="btn btn-secondary">Go Back</a>
+    </div>
+   
+{% endblock %}

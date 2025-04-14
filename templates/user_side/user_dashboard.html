@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Quizzy -- Dashboard
+        {% endblock %}
+    </title>
+
+    {% block style %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/user_side.css') }}">
+    {% endblock %}
+    
+</head>
+
+<body>
+    {% include 'user_side/user_nav.html' %}
+    {% include 'flash.html' %}
+    {% block content %}
+    <div class="d-flex align-items-center justify-content-between p-3">
+        <!-- Circular Dark Mode Toggle Button (Leftmost) -->
+        <button id="toggleMode" class="btn btn-dark rounded-circle shadow me-3 p-2">
+            🌙
+        </button>
+    
+        <!-- Welcome Message (Centered with a bit of margin) -->
+        <h3 class="me-auto" style="color:#bbec65; background: #c1107d; border-radius: 15px; padding: 8px">
+            Welcome, {{ user }}!
+        </h3>
+    
+        <!-- Profile Picture (Right Corner) -->
+        <div>
+            <img src="{{ url_for('static', filename='images/user_profile.png') }}" alt="Profile Picture"
+                class="rounded-circle profile-pic me-3 mt-2" width="60" height="60">
+        </div>
+    </div>
+    
+    <!-- Available Quizzes -->
+    {% if quizzes %}
+    <div class="card mx-2 my-4 shadow">
+        <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+            <h2 class="mb-0">Available Quizzes</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Quiz ID</th>
+                            <th>Quiz Name</th>
+                            <th>Subject</th>
+                            <th>Chapter</th>
+                            <th>Number of Questions</th>
+                            <th>Duration</th>
+                            <th>Due Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quiz in quizzes %}
+                            {% if quiz.is_deleted %}
+                                {% if quiz.id in attempted_quiz_id %}
+                                    <!-- If quiz is deleted and attempted -->
+                                    <tr class="text-center">
+                                        <td>{{ quiz.quizId }}</td>
+                                        <td>{{ quiz.title }}</td>
+                                        <td>{{ quiz.subject.sub_name }}</td>
+                                        <td>{{ quiz.chapter.chapter_name }}</td>
+                                        <td>{{ quiz.number_of_questions }}</td>
+                                        <td>{{ quiz.duration }} minutes</td>
+                                        <td>{{ quiz.due_date.strftime('%d-%m-%Y %H:%M') if quiz.due_date else 'No Due Date' }}</td>
+                                        <td>
+                                            <a href="{{ url_for('user_score') }}" class="btn  btn-primary">Attempted</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <!-- If quiz is deleted and not attempted -->
+                                    <tr class="text-center">
+                                        <td>{{ quiz.quizId }}</td>
+                                        <td>{{ quiz.title }}</td>
+                                        <td>{{ quiz.subject.sub_name }}</td>
+                                        <td>{{ quiz.chapter.chapter_name }}</td>
+                                        <td>{{ quiz.number_of_questions }}</td>
+                                        <td>{{ quiz.duration }} minutes</td>
+                                        <td>{{ quiz.due_date.strftime('%d-%m-%Y %H:%M') if quiz.due_date else 'No Due Date' }}</td>
+                                        <td>
+                                            {% if now > quiz.due_date %}
+                                            <button class="btn btn-danger">Expired</button>
+                                            {% else %}
+                                            <button class="btn btn-danger">Not Available</button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <!-- If quiz is not deleted (active) -->
+                                <tr class="text-center">
+                                    <td>{{ quiz.quizId }}</td>
+                                    <td>{{ quiz.title }}</td>
+                                    <td>{{ quiz.subject.sub_name }}</td>
+                                    <td>{{ quiz.chapter.chapter_name }}</td>
+                                    <td>{{ quiz.number_of_questions }}</td>
+                                    <td>{{ quiz.duration }} minutes</td>
+                                    <td>{{ quiz.due_date.strftime('%d-%m-%Y %H:%M') if quiz.due_date else 'No Due Date' }}</td>
+                                    <td>
+                                        {% if quiz.id in attempted_quiz_id %}
+                                        <a href="{{ url_for('user_score') }}" class="btn btn-primary">Attempted</a>
+                                        {% elif now > quiz.due_date %}
+                                        <button class="btn btn-danger">Expired</button>
+                                        {% else %}
+                                        <a href="{{ url_for('start_quiz', quiz_id=quiz.id) }}"
+                                            class="btn btn-success btn-sm">Start Quiz</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="mt-4 text-center alert alert-warning" role="alert">
+        No quizzes available!
+    </div>
+    {% endif %}
+    {% endblock %}
+
+    {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/mode_toggle.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>

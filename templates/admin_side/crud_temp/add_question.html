@@ -1,0 +1,42 @@
+{% extends 'admin_side/admin_dashboard.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Add a New Question</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Question Form -->
+                    <form action="{{ url_for('add_question', chapter_id=chapter_id) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="questionId">Question ID</label>
+                            <input type="text" class="form-control" id="questionId" name="questionId" required>
+                            <label for="question" class="form-label">Question</label>
+                            <textarea name="question" id="question" class="form-control" required></textarea>
+                            <label for="option1" class="form-label">Option 1</label>
+                            <input type="text" class="form-control" id="option1" name="option1" required>
+                            <label for="option2" class="form-label">Option 2</label>
+                            <input type="text" class="form-control" id="option2" name="option2" required>
+                            <label for="option3" class="form-label">Option 3</label>
+                            <input type="text" class="form-control" id="option3" name="option3" required>
+                            <label for="option4" class="form-label">Option 4</label>
+                            <input type="text" class="form-control" id="option4" name="option4" required>
+                            <label for="answer" class="form-label">Correct Option</label>
+                            <input type="number" class="form-control" id="answer" name="answer" required>
+                            <label for="marks" class="form-label">Marks for question</label>
+                            <input type="number" class="form-control" id="marks" name="marks" required>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Add Question</button>
+                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

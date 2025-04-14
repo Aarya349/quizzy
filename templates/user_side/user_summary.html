@@ -1,0 +1,22 @@
+{% extends 'user_side/user_dashboard.html' %}
+
+{% block title %}
+    Summary
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2 class="text-center fw-bold mb-4 text-primary">Your Quiz Performance</h2>
+
+    <div class="card mx-auto shadow-sm" style="width: 60%; background-color: #a0dc91;">
+        <div class="card-body">
+            <p class="fs-4 fw-semibold text-dark">Your Average Score: <span class="text-success">{{ avg_score }}%</span></p>
+        </div>
+    </div>
+
+    <div class="mt-4 mb-4">
+        <img src="{{ graph_url }}" alt="Your Score Graph" class="img-fluid rounded shadow">
+    </div>
+</div>
+
+{% endblock %}

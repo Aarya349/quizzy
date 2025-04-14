@@ -1,0 +1,68 @@
+{% extends "admin_side/admin_dashboard.html" %}
+
+{% block content %}
+<div class="text-center mt-2">
+    <h3 class="bg-primary text-white d-inline-block px-4 py-2 rounded">
+        Chapter : {{ chapter.chapter_name }}
+    </h3>
+</div>
+
+{% if questions %}
+    <div class="container mt-4 ">
+        <div class="row fs-4 bg-success rounded text-center">
+            <div class="col">
+                Question ID
+            </div>
+            <div class="col">
+                Question
+            </div>
+            <div class="col">
+                Options
+            </div>
+            <div class="col">
+                Correct Option
+            </div>
+            <div class="col">
+                Marks for question
+            </div>
+            <div class="col">
+                Action
+            </div>
+        </div>
+        {% for question in questions %}
+            <div class="row fs-5 mt-3">
+                <div class="col text-center">
+                    {{ question.questionId }}
+                </div>
+                <div class="col">
+                    {{ loop.index }}. {{ question.title }}
+                </div>
+                <div class="col">
+                    1. {{ question.option1 }} <br>
+                    2. {{ question.option2 }} <br>
+                    3. {{ question.option3 }} <br>
+                    4. {{ question.option4 }}
+                </div>
+                <div class="col text-center">
+                    {{ question.correct_option }}
+                </div>
+                <div class="col text-center">
+                    {{ question.marks }}
+                </div>
+                <div class="col text-center">
+                    <a href="{{ url_for('edit_question',question_id=question.id) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ url_for('delete_question',question_id=question.id) }}" class="btn btn-danger">Delete</a>
+                </div>
+            </div> <hr>
+        {% endfor %}
+    </div>
+    <div class="text-center mb-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Go Back To Home</a>
+    </div>
+{% else %}
+<div class="ms-4">
+    <p>Question Not Available in this chapter</p>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Go Back</a>
+</div>
+{% endif %}
+{% endblock %}

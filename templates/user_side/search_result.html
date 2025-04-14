@@ -1,0 +1,65 @@
+{% extends 'user_side/user_dashboard.html' %}
+
+{% block content %}
+
+<!-- Search Result Page -->
+<div class="container mt-4">
+    <h3>Search Results for "{{ search }}"</h3>
+
+    <!-- Quizzes Section -->
+    {% if results.quizzes %}
+        <div class="list-group">
+            <h5 class="mt-3">Quizzes</h5>
+            {% for quiz in results.quizzes %}
+            <div class="list-group-item mb-1 p-3 border rounded shadow-sm">
+                <h4 class="mb-1">{{quiz.quizId}} - {{ quiz.title }}</h4>
+                <p><strong>Subject:</strong> {{ quiz.subject.sub_name }} | <strong>Chapter:</strong> {{ quiz.chapter.chapter_name }}</p>
+                <p><strong>Number of Questions:</strong> {{ quiz.number_of_questions }} | <strong>Duration:</strong> {{ quiz.duration }} minutes</p>
+                <p><strong>Due Date:</strong>{{ quiz.due_date }}</p>
+
+                <!-- Quiz Status Logic -->
+                {% if quiz.is_deleted %}
+                    {% if quiz.id in quiz_attempt_ids %}
+                        <!-- Deleted but Attempted -->
+                        <a href="{{ url_for('view_attempted_quiz', quiz_id=quiz.id) }}" 
+                        class="btn btn-primary" 
+                        style="background: rgb(67, 128, 61)">
+                        ✅ Attempted
+                        </a>
+                    {% else %}
+                        <!-- Deleted but Not Attempted -->
+                        <button class="btn btn-danger">❌ Not Available</button>
+                    {% endif %}
+                {% else %}
+                    {% if quiz.id in quiz_attempt_ids %}
+                        <!-- Active and Attempted -->
+                        <a href="{{ url_for('view_attempted_quiz', quiz_id=quiz.id) }}" 
+                        class="btn btn-primary" 
+                        style="background: rgb(67, 128, 61)">
+                        ✅ Attempted
+                        </a>
+                    {% else %}
+                        <!-- Active and Not Attempted -->
+                        {% if now > quiz.due_date %}
+                            <button class="btn btn-danger">Expired</button>  
+                        {% else %}
+                            <a href="{{ url_for('start_quiz', quiz_id=quiz.id) }}" 
+                            class="btn btn-success btn-sm">
+                            ▶️ Start Quiz
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div><hr>
+        <div>
+            <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Back</a>
+        </div>
+    {% else %}
+        <p class="text-muted">No results found.</p><br>
+        <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Back</a>    
+    {% endif %} 
+</div>
+
+{% endblock %}

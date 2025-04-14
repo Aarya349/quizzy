@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background: linear-gradient(90deg, #043c5c, #8706ba);">
+    <div class="container-fluid">
+        <!-- Logo and Brand Name -->
+        <a class="navbar-brand" href="#" style="color: yellow; font-weight: bold;">
+            <img src="/static/images/img1.jpeg" alt="Logo" width="30" height="28"
+                class="rounded-circle d-inline-block align-text-top" style="margin-right: 10px;">Quizzy
+        </a>
+
+        <!-- Toggle Button for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links & Search Bar -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Search Bar -->
+            <form action="{{ url_for('admin_search_result') }}" method="POST" class="d-flex ms-auto me-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: #6fff27;" href="{{ url_for('admin_dashboard') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: #6fff27;" href="{{ url_for('view_quizzes') }}">Quiz</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: #6fff27;" href="{{ url_for('summary') }}">Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: #6fff27;" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

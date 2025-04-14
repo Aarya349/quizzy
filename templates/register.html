@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quizzy -- Register
+{% endblock %}
+
+{% block style %}
+<style>
+    /* Center the form */
+    .form-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Use Flexbox for label-input alignment */
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    /* Style labels */
+    .form-group label {
+        flex: 1;
+        font-weight: 600;
+        color: #555;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    /* Style inputs and select dropdown */
+    .form-group input,
+    .form-group select {
+        flex: 2;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: 0.3s ease-in-out;
+    }
+
+    /* Input focus effect */
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+
+    /* Style the register button */
+    .btn-primary {
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+
+    /* Make form responsive */
+    @media (max-width: 600px) {
+        .form-group {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .form-group label {
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="margin:10px; background: linear-gradient(135deg, #a73b3b, #0c0c0d); height: 100vh; display: flex; justify-content: center; align-items: center; border-radius: 10px;">
+    <form action="{{ url_for('register') }}" method="POST">
+        <div>
+            <h1 class="head">Welcome To Register Page</h1>
+        </div>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="email" id="username" name="username" placeholder="Enter Your E-mail">
+            </div>
+    
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name">
+            </div>
+    
+            <div class="form-group">
+                <label for="dob">DOB:</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+    
+            <div class="form-group">
+                <label for="qualification">Highest Qualification:</label>
+                <select name="qualification" id="qualification">
+                    <option value="" disabled selected>Select Qualification</option>
+                    <option value="High">School</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                    <option value="Master's Degree">Master's Degree</option>
+                    <option value="Ph.D">Ph.D</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter Your Password">
+            </div>
+    
+            <div class="form-group">
+                <label for="cpassword">Confirm Password:</label>
+                <input type="password" id="cpassword" name="cpassword" placeholder="Enter Your Confirm Password">
+            </div>
+    
+            <button type="submit" class="btn-primary">Register Now</button>
+        </div>
+        <div style="text-align: end; margin-top: 20px; background: #ffffff; padding: 10px; border-radius: 8px;">
+            Already have an account?
+            <a href="{{ url_for('login') }}" style="background-color: #46b171; border-radius:3px">Existing User</a>
+        </div>
+    </form>
+    
+</div>
+
+{% endblock %}
