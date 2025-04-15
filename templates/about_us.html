@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+
+{% block title %}About Quizzy{% endblock %}
+
+{% block style %}
+<style>
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(135deg, #6d0349, #10103a);
+        color: white;
+        text-align: center;
+        margin: 15px;
+        border-radius: 8px;
+        padding: 5rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("{{ url_for('static', filename='images/mission.webp') }}");
+        opacity: 0.1;
+    }
+    
+    /* Section Styling */
+    .about-section {
+        padding: 4rem 0;
+        margin-left: 15px;
+    }
+    
+    .section-title {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 2rem;
+        color: #500202;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #e7d014, #500202);
+    }
+    
+    /* Team Cards */
+    .team-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .team-card img {
+        height: 250px;
+        object-fit: cover;
+    }
+    
+    .team-card .card-body {
+        background: #f8f9fa;
+    }
+    
+    /* Features */
+    .feature-box {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
+    
+    .feature-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-color: #e7d014;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        color: #500202;
+        margin-bottom: 1rem;
+    }
+    
+    /* Stats */
+    .stats-section {
+        background: linear-gradient(rgba(80, 2, 2, 0.9), rgba(80, 2, 2, 0.9)), 
+                    url("{{ url_for('static', filename='images/quiz-bg.jpg') }}");
+        background-size: cover;
+        background-attachment: fixed;
+        color: white;
+        padding: 4rem 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #e7d014;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .about-hero {
+            padding: 3rem 0;
+        }
+        
+        .about-section {
+            padding: 2rem 0;
+        }
+        
+        .team-card {
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero ms-4">
+    <div class="container text-center position-relative">
+        <h1 class="display-4 fw-bold mb-4">About Quizzy</h1>
+        <p class="lead mb-5">Transforming learning through interactive quizzes and knowledge challenges</p>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-title">Our Story</h2>
+                <p class="lead">Quizzy was born from a simple idea - learning should be fun, engaging, and accessible to everyone.</p>
+                <p>Founded in 2023, our platform started as a small project by a group of educators and tech enthusiasts who wanted to make test preparation more interactive. Today, Quizzy has grown into a comprehensive learning platform serving thousands of users worldwide.</p>
+                <p>We believe that regular knowledge testing enhances retention and makes learning more effective. Our mission is to help people of all ages and backgrounds expand their knowledge through our carefully crafted quizzes.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/quiz5.webp') }}" alt="Our Story" class="img-fluid rounded shadow" style="width: 400px; border-radius: 10px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Mission -->
+<section class="about-section bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                <h2 class="section-title">Our Mission</h2>
+                <p class="lead">To make learning enjoyable and measurable through innovative quiz technology.</p>
+                <p>At Quizzy, we're committed to:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Creating high-quality, diverse quiz content</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Providing personalized learning experiences</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Making education accessible to everyone</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Continuously improving based on user feedback</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <img src="{{ url_for('static', filename='images/mission.webp') }}" alt="Our Mission" class="img-fluid rounded shadow" style="width: 400px; border-radius: 10px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="about-section">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Why Choose Quizzy?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Knowledge Building</h3>
+                    <p>Our quizzes are designed by experts to help you learn and retain information effectively across various subjects.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Competitive Edge</h3>
+                    <p>Challenge yourself and others with our leaderboard system and achievement badges.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your improvement with detailed analytics and personalized recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">10,000+</div>
+                    <p>Active Users</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <p>Quizzes Available</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">1M+</div>
+                    <p>Questions Answered</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <p>Learning Support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="about-section bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Meet Our Team</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card team-card">
+                    <img src="{{ url_for('static', filename='images/ankit.jpg') }}" class="card-img-top" alt="Team Member" style="width: 150px; height: 200px; border-radius: 50%; margin: auto;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Ankit Kumar</h5>
+                        <p class="text-muted">Founder & Director</p>
+                        <p class="card-text">IIT Madras "BS In Data Science & Application"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card team-card">
+                    <img src="{{ url_for('static', filename='images/team2.jpg') }}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Priya Kumari</h5>
+                        <p class="text-muted">Head of Content</p>
+                        <p class="card-text">Former educator passionate about creating engaging learning materials.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card team-card">
+                    <img src="{{ url_for('static', filename='images/team3.jpg') }}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">#####</h5>
+                        <p class="text-muted">######</p>
+                        <p class="card-text">Tech enthusiast focused on building seamless user experiences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="about-section" id="contact">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Get In Touch</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body p-5">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

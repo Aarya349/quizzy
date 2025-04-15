@@ -1,12 +1,16 @@
 {% extends 'admin_side/admin_dashboard.html' %}
 
 {% block content %}
+<div class="container py-4">
     {% if quizzes %}
-        <div class="container mt-4">
-            <h2>All Quizzes</h2>
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr class="text-center">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold text-primary">All Quizzes</h2>
+            <a href="{{ url_for('create_quiz') }}" class="btn btn-outline-primary">➕ Create New Quiz</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
                         <th>Quiz ID</th>
                         <th>Title</th>
                         <th>Description</th>
@@ -21,39 +25,47 @@
                 <tbody>
                     {% for quiz in quizzes %}
                         <tr>
-                            <td>{{ quiz.quizId }}</td>
+                            <td class="text-center">{{ quiz.quizId }}</td>
                             <td>{{ quiz.title }}</td>
                             <td>{{ quiz.description }}</td>
                             <td>{{ quiz.subject.sub_name }}</td>
                             <td>{{ quiz.chapter.chapter_name }}</td>
-                            <td>{{ quiz.number_of_questions }}</td>
-                            <td>{{ quiz.duration }}</td>
-                            <td>{{ quiz.due_date.strftime('%d-%m-%Y %H:%M') if quiz.due_date else 'No Due Date' }}</td>
-                            
-                            {% if quiz.is_deleted %}
-                                <td>
-                                    <a href="{{ url_for('permanently_delete_quiz', quiz_id=quiz.id) }}" class="btn btn-danger">Permanently Delete</a>
-                                    <!-- <button class="btn btn-primary" style="background-color: rgb(205, 83, 83);">Deleted</button> -->
-                                    <form action="{{ url_for('reactive_quiz', quiz_id=quiz.id) }}" method="POST" style="display:inline;">
-                                        <button type="submit" class="btn btn-success btn-sm">Reactive</button>
-                                    </form>
-                                </td>
-                            {% else %}
-                                <td>
-                                    <a href="{{ url_for('edit_quiz', quiz_id=quiz.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ url_for('delete_quiz', quiz_id=quiz.id) }}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
-                            {% endif %}
+                            <td class="text-center">{{ quiz.number_of_questions }}</td>
+                            <td class="text-center">{{ quiz.duration }}</td>
+                            <td class="text-center">
+                                {{ quiz.due_date.strftime('%d-%m-%Y %H:%M') if quiz.due_date else 'No Due Date' }}
+                            </td>
+                            <td class="text-center">
+                                {% if quiz.is_deleted %}
+                                    <div class="d-flex flex-column gap-2">
+                                        <a href="{{ url_for('permanently_delete_quiz', quiz_id=quiz.id) }}"
+                                           class="btn btn-sm btn-danger w-100">Delete Permanently</a>
+                                        <form action="{{ url_for('reactive_quiz', quiz_id=quiz.id) }}"
+                                              method="POST">
+                                            <button type="submit" class="btn btn-sm btn-success w-100">Reactive</button>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex flex-column gap-2">
+                                        <a href="{{ url_for('edit_quiz', quiz_id=quiz.id) }}"
+                                           class="btn btn-sm btn-warning w-100">Edit</a>
+                                        <form action="{{ url_for('delete_quiz', quiz_id=quiz.id) }}"
+                                              method="POST">
+                                            <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{{ url_for('create_quiz') }}" class="ms-4 mt-4 btn btn-primary">Create New Quiz</a>
         </div>
     {% else %}
-        <p class="ms-4 mt-4 fs-4">Not any quiz available</p>
-        <a href="{{ url_for('create_quiz') }}" class="ms-4 mt-4 btn btn-primary">Create New Quiz</a>
+        <div class="text-center mt-5">
+            <p class="fs-4 text-muted">No quizzes available.</p>
+            <a href="{{ url_for('create_quiz') }}" class="btn btn-outline-primary mt-3">➕ Create New Quiz</a>
+        </div>
     {% endif %}
+</div>
 {% endblock %}

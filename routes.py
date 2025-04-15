@@ -565,3 +565,13 @@ def not_attempted_users(quiz_id):
 def user_list():
     users = User.query.filter(User.is_admin == False).all()
     return render_template('admin_side/user_list.html', users=users)
+
+# Route for about us page
+@app.route('/about/quizzy')
+def about_us():
+    return render_template('about_us.html')
+
+# Route for contact us page
+@app.route('/contact/quizzy')
+def contact_us():
+    return render_template('contact_us.html')

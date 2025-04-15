@@ -1,9 +1,184 @@
-<nav class="nav">
-    <div class="brand" style="position: absolute"><a href="#">Quizzy</a></div>
-    <ul class="ul">
-        <!-- <div class="brand"><a href="{{ url_for('home') }}">Quizzy</a></div> -->
-        <li class="li"><a href="{{url_for('home')}}">Home</a></li>
-        <li class="li"><a href="{{url_for('login')}}">Login</a></li>
-        <li class="li"><a href="{{url_for('register')}}">Register</a></li>
-    </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzy</title>
+    <style>
+        /* nav1 css - Responsive and Enhanced */
+        .nav {
+            background-color: #500202;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .li {
+            margin: 0 10px;
+        }
+
+        .li a {
+            text-decoration: none;
+            color: #e7d014;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            color: #fff8d0;
+        }
+
+        .brand a {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .brand a:hover {
+            color: #e7d014;
+        }
+
+        /* Hamburger menu for mobile */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+            
+            .ul {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                margin-top: 1rem;
+            }
+            
+            .ul.active {
+                display: flex;
+            }
+            
+            .li {
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .li a {
+                display: block;
+                padding: 0.8rem;
+            }
+            
+            .brand {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: static !important;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Animation for smoother transitions */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ul.active .li {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* Staggered animation for menu items */
+        .ul.active .li:nth-child(1) { animation-delay: 0.1s; }
+        .ul.active .li:nth-child(2) { animation-delay: 0.2s; }
+        .ul.active .li:nth-child(3) { animation-delay: 0.3s; }
+        .ul.active .li:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="brand">
+            <a href="#">Quizzy</a>
+            <div class="menu-toggle">☰</div>
+        </div>
+        <ul class="ul">
+            <li class="li"><a href="{{url_for('home')}}">Home</a></li>
+            <li class="li"><a href="{{url_for('login')}}">Login</a></li>
+            <li class="li"><a href="{{url_for('register')}}">Register</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.ul');
+            
+            menuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                
+                // Change hamburger icon to X when menu is open
+                if (navMenu.classList.contains('active')) {
+                    this.innerHTML = '✕';
+                } else {
+                    this.innerHTML = '☰';
+                }
+            });
+            
+            // Close menu when a nav item is clicked (for mobile)
+            const navItems = document.querySelectorAll('.li a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        menuToggle.innerHTML = '☰';
+                    }
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 768 && 
+                    !event.target.closest('.nav') && 
+                    navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    menuToggle.innerHTML = '☰';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

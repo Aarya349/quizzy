@@ -4,27 +4,271 @@
     Quizzy -- Login
 {% endblock %}
 
+{% block style %}
+    <style>
+        /* Main Container */
+        .login-container {
+            margin: 20px;
+            background: linear-gradient(135deg, #b23f3f, #6833c9);
+            min-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgb(204, 72, 72);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-30%, -30%); }
+            100% { transform: rotate(30deg) translate(30%, 30%); }
+        }
+
+        /* Form Styling */
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #500202;
+        }
+
+        .form-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #b23f3f, #6833c9);
+            border-radius: 3px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        .form-group input:focus {
+            border-color: #6833c9;
+            box-shadow: 0 0 0 3px rgba(104, 51, 201, 0.2);
+            outline: none;
+            background-color: #fff;
+        }
+
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #b23f3f, #6833c9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #a03838, #5c2db3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Links Section */
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .form-links a {
+            color: #6833c9;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+            margin: 5px 0;
+        }
+
+        .form-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #b23f3f;
+            transition: width 0.3s ease;
+        }
+
+        .form-links a:hover {
+            color: #b23f3f;
+        }
+
+        .form-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+                padding: 20px;
+                min-height: 85vh;
+            }
+
+            .login-form {
+                padding: 30px 25px;
+            }
+
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-group input {
+                padding: 12px 15px;
+            }
+
+            .btn-primary {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form {
+                padding: 25px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .form-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .form-links a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-form {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div style="margin:10px; background: linear-gradient(135deg, #b23f3f, #6833c9); height: 80vh; display: flex; justify-content: center; align-items: center; border-radius: 10px;">
-        <form action="{{ url_for('login') }}" method="POST">
-            <div>
-                <h1 class="head">Welcome To Login Page</h1>
+    <div class="login-container">
+        <form class="login-form" action="{{ url_for('login') }}" method="POST">
+            <div class="form-header">
+                <h1>Welcome Back to Quizzy!</h1>
+                <p>Please login to continue your learning journey</p>
             </div>
-            <div class="form">
-                <label for="username">Username:</label>
-                <input type="email" id="username" name="username" placeholder="Enter Your E-mail" required>
-    
+            
+            <div class="form-group">
+                <label for="username">Email Address</label>
+                <input type="email" id="username" name="username" placeholder="Enter your email" required autofocus>
+            </div>
+            
+            <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter Your Password" required >
-    
-                <button type="submit" class="btn-primary">Login</button>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
-            <div class="update">
-                <a href="{{ url_for('register') }}">Register Now</a>
-                <a href="{{ url_for('forget_password') }}">Forget Password</a>
+            
+            <button type="submit" class="btn-primary">Login</button>
+            
+            <div class="form-links">
+                <a href="{{ url_for('register') }}">Create an account</a>
+                <a href="{{ url_for('forget_password') }}">Forgot password?</a>
             </div>
         </form>
     </div>
-    
 {% endblock %}
 

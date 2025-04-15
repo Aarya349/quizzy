@@ -6,116 +6,315 @@ Quizzy -- Register
 
 {% block style %}
 <style>
-    /* Center the form */
-    .form-container {
-        max-width: 500px;
-        margin: auto;
-        padding: 20px;
-        background: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Use Flexbox for label-input alignment */
-    .form-group {
+    /* Main Container */
+    .register-container {
+        margin: 20px;
+        background: linear-gradient(135deg, #a73b3b, #0c0c0d);
+        min-height: 100vh;
         display: flex;
+        justify-content: center;
         align-items: center;
-        margin-bottom: 15px;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 15px 30px rgb(29, 144, 239);
+        position: relative;
+        overflow: hidden;
     }
 
-    /* Style labels */
+    .register-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
+        animation: shine 8s infinite linear;
+    }
+
+    @keyframes shine {
+        0% { transform: rotate(30deg) translate(-30%, -30%); }
+        100% { transform: rotate(30deg) translate(30%, 30%); }
+    }
+
+    /* Form Container */
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 550px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Header */
+    .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-header h1 {
+        font-size: 2.2rem;
+        color: #a73b3b;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .form-header h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #a73b3b, #0c0c0d);
+        border-radius: 3px;
+    }
+
+    .form-header p {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
     .form-group label {
-        flex: 1;
+        display: block;
+        margin-bottom: 8px;
         font-weight: 600;
-        color: #555;
-        text-align: right;
-        margin-right: 10px;
+        color: #444;
+        font-size: 0.95rem;
     }
 
-    /* Style inputs and select dropdown */
     .form-group input,
     .form-group select {
-        flex: 2;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-        transition: 0.3s ease-in-out;
+        width: 100%;
+        padding: 14px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
     }
 
-    /* Input focus effect */
     .form-group input:focus,
     .form-group select:focus {
-        border-color: #007bff;
-        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        border-color: #a73b3b;
+        box-shadow: 0 0 0 3px rgba(167, 59, 59, 0.2);
         outline: none;
+        background-color: #fff;
     }
 
-    /* Style the register button */
+    .form-group input::placeholder {
+        color: #aaa;
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+        height: 4px;
+        background: #eee;
+        border-radius: 2px;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+    .strength-meter {
+        height: 100%;
+        width: 0;
+        background: #e74c3c;
+        transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    /* Button Styling */
     .btn-primary {
         width: 100%;
-        padding: 12px;
-        background: #007bff;
+        padding: 14px;
+        background: linear-gradient(to right, #a73b3b, #0c0c0d);
         color: white;
-        font-size: 16px;
-        font-weight: bold;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
         cursor: pointer;
-        transition: background 0.3s ease-in-out;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .btn-primary:hover {
-        background: #0056b3;
+        background: linear-gradient(to right, #8e3232, #000000);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     }
 
-    /* Make form responsive */
-    @media (max-width: 600px) {
-        .form-group {
-            flex-direction: column;
-            align-items: flex-start;
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    /* Footer Links */
+    .form-footer {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        font-size: 0.95rem;
+    }
+
+    .form-footer a {
+        color: #a73b3b;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 8px 15px;
+        border-radius: 20px;
+        background-color: rgba(167, 59, 59, 0.1);
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .form-footer a:hover {
+        background-color: rgba(167, 59, 59, 0.2);
+        color: #8e3232;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .register-container {
+            margin: 10px;
+            padding: 20px;
+            min-height: 100vh;
         }
 
-        .form-group label {
-            text-align: left;
-            margin-bottom: 5px;
+        .form-container {
+            padding: 30px 25px;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
         }
 
         .form-group input,
         .form-group select {
-            width: 100%;
+            padding: 12px 15px;
         }
+
+        .btn-primary {
+            padding: 12px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-container {
+            padding: 25px 20px;
+        }
+
+        .form-header h1 {
+            font-size: 1.6rem;
+        }
+
+        .form-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-footer a {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-container {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Date Input Customization */
+    input[type="date"] {
+        position: relative;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+    }
+
+    /* Select Dropdown Styling */
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a73b3b'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 15px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="margin:10px; background: linear-gradient(135deg, #a73b3b, #0c0c0d); height: 100vh; display: flex; justify-content: center; align-items: center; border-radius: 10px;">
-    <form action="{{ url_for('register') }}" method="POST">
-        <div>
-            <h1 class="head">Welcome To Register Page</h1>
+<div class="register-container">
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Create Your Account</h1>
+            <p>Join Quizzy to test your knowledge and compete with others</p>
         </div>
-        <div class="form-container">
+
+        <form action="{{ url_for('register') }}" method="POST">
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="email" id="username" name="username" placeholder="Enter Your E-mail">
+                <label for="username">Email Address</label>
+                <input type="email" id="username" name="username" placeholder="Enter your email" required>
             </div>
-    
+
             <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
             </div>
-    
+
             <div class="form-group">
-                <label for="dob">DOB:</label>
-                <input type="date" id="dob" name="dob">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
             </div>
-    
+
             <div class="form-group">
-                <label for="qualification">Highest Qualification:</label>
-                <select name="qualification" id="qualification">
-                    <option value="" disabled selected>Select Qualification</option>
-                    <option value="High">School</option>
+                <label for="qualification">Highest Qualification</label>
+                <select name="qualification" id="qualification" required>
+                    <option value="" disabled selected>Select your qualification</option>
+                    <option value="High School">High School</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Diploma">Diploma</option>
                     <option value="Bachelor's Degree">Bachelor's Degree</option>
@@ -124,25 +323,74 @@ Quizzy -- Register
                     <option value="Other">Other</option>
                 </select>
             </div>
-    
+
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter Your Password">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                <div class="password-strength">
+                    <div class="strength-meter" id="strength-meter"></div>
+                </div>
             </div>
-    
+
             <div class="form-group">
-                <label for="cpassword">Confirm Password:</label>
-                <input type="password" id="cpassword" name="cpassword" placeholder="Enter Your Confirm Password">
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" id="cpassword" name="cpassword" placeholder="Confirm your password" required>
             </div>
-    
+
             <button type="submit" class="btn-primary">Register Now</button>
-        </div>
-        <div style="text-align: end; margin-top: 20px; background: #ffffff; padding: 10px; border-radius: 8px;">
-            Already have an account?
-            <a href="{{ url_for('login') }}" style="background-color: #46b171; border-radius:3px">Existing User</a>
-        </div>
-    </form>
-    
+
+            <div class="form-footer">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Sign In</a>
+            </div>
+        </form>
+    </div>
 </div>
 
+<script>
+    // Password strength indicator
+    const passwordInput = document.getElementById('password');
+    const strengthMeter = document.getElementById('strength-meter');
+
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let strength = 0;
+        
+        // Check for length
+        if (password.length >= 8) strength += 1;
+        if (password.length >= 12) strength += 1;
+        
+        // Check for uppercase letters
+        if (/[A-Z]/.test(password)) strength += 1;
+        
+        // Check for numbers
+        if (/[0-9]/.test(password)) strength += 1;
+        
+        // Check for special characters
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+        
+        // Update strength meter
+        const width = strength * 20;
+        let color;
+        
+        if (strength <= 1) color = '#e74c3c';
+        else if (strength <= 3) color = '#f39c12';
+        else color = '#2ecc71';
+        
+        strengthMeter.style.width = width + '%';
+        strengthMeter.style.background = color;
+    });
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('cpassword').value;
+        
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+            document.getElementById('cpassword').focus();
+        }
+    });
+</script>
 {% endblock %}
