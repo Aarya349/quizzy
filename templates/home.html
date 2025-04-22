@@ -302,6 +302,86 @@ Quizzy -- Home
         .footer {
             animation-delay: 0.4s;
         }
+
+        /* Magnetic Playground Styles */
+        .magnetic-playground {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 40px auto;
+            max-width: 800px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(20, 218, 218, 0.3);
+            box-shadow: 0 10px 30px rgba(20, 218, 218, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .magnetic-playground h2 {
+            color: #e7d014;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .magnetic-playground p {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .magnetic-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(20, 218, 218, 0.1);
+            overflow: hidden;
+        }
+
+        .magnetic-ball {
+            position: absolute;
+            border-radius: 50%;
+            mix-blend-mode: screen;
+            transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.24, 0.99);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .quizzy-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6rem;
+            font-weight: bold;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(234, 223, 22, 0.5);
+            z-index: 1;
+            pointer-events: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .magnetic-playground {
+                padding: 30px 20px;
+                margin: 30px 10px;
+            }
+            
+            .magnetic-container {
+                height: 300px;
+            }
+            
+            .quizzy-text {
+                font-size: 3rem;
+            }
+        }
     </style>
 {% endblock %}
 
@@ -330,6 +410,18 @@ Quizzy -- Home
     <img src="{{ url_for('static', filename='images/quiz6.jpg') }}" alt="Literature Quiz" loading="lazy">
     <img src="{{ url_for('static', filename='images/quiz5.webp') }}" alt="Technology Quiz" loading="lazy">
 </div>
+
+<div class="divider"></div>
+
+<!-- Enhanced Magnetic Playground with Quizzy Text -->
+<section class="magnetic-playground">
+    <h2>Interactive Particle Playground</h2>
+    
+    <div class="magnetic-container" id="particle-container">
+        <div class="quizzy-text">Quizzy</div>
+        <!-- Particles will be generated dynamically with JavaScript -->
+    </div>
+</section>
 
 <div class="footer">
     <div class="footer-section footer-feature">
@@ -388,6 +480,161 @@ Quizzy -- Home
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('particle-container');
+        const rect = container.getBoundingClientRect();
+        const textElement = document.querySelector('.quizzy-text');
+        const textRect = textElement.getBoundingClientRect();
+        
+        // Create 150 small balls (increased count for better effect)
+        const ballCount = 150;
+        const balls = [];
+        const colors = [
+            '#e7d014', '#14acda', '#e7146a', 
+            '#14da7d', '#8a14da', '#ff6b6b', 
+            '#4ecdc4', '#ffbe0b', '#fb5607'
+        ];
+        
+        // Create balls with random positions and colors
+        for (let i = 0; i < ballCount; i++) {
+            const ball = document.createElement('div');
+            ball.className = 'magnetic-ball';
+            
+            // Random size between 3px and 10px (smaller for more particles)
+            const size = Math.random() * 7 + 3;
+            ball.style.width = `${size}px`;
+            ball.style.height = `${size}px`;
+            
+            // Random color
+            ball.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Random opacity for depth effect
+            ball.style.opacity = Math.random() * 0.7 + 0.3;
+            
+            // Position particles initially around the "Quizzy" text
+            let x, y;
+            if (Math.random() > 0.5) {
+                // Position around text
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * 100 + 50;
+                x = rect.width/2 + Math.cos(angle) * radius;
+                y = rect.height/2 + Math.sin(angle) * radius;
+            } else {
+                // Some random positions
+                x = Math.random() * rect.width;
+                y = Math.random() * rect.height;
+            }
+            
+            ball.style.left = `${x}px`;
+            ball.style.top = `${y}px`;
+            
+            container.appendChild(ball);
+            
+            // Store original position
+            balls.push({
+                element: ball,
+                x: x,
+                y: y,
+                size: size,
+                speed: 0.1 + Math.random() * 0.2 // Random speed
+            });
+        }
+        
+        // Mouse position and text attraction points
+        let mouseX = rect.width / 2;
+        let mouseY = rect.height / 2;
+        const textAttractors = [];
+        
+        // Create attraction points for each letter (simplified)
+        for (let i = 0; i < 6; i++) { // "Quizzy" has 6 letters
+            textAttractors.push({
+                x: rect.width/2 - 100 + i * 40,
+                y: rect.height/2,
+                strength: 0.3
+            });
+        }
+        
+        container.addEventListener('mousemove', (e) => {
+            const containerRect = container.getBoundingClientRect();
+            mouseX = e.clientX - containerRect.left;
+            mouseY = e.clientY - containerRect.top;
+        });
+        
+        // Animation loop
+        function animate() {
+            balls.forEach(ball => {
+                const ballRect = ball.element.getBoundingClientRect();
+                const ballX = ball.x + ballRect.width / 2;
+                const ballY = ball.y + ballRect.height / 2;
+                
+                // Calculate mouse attraction
+                const mouseDistanceX = mouseX - ballX;
+                const mouseDistanceY = mouseY - ballY;
+                const mouseDistance = Math.sqrt(mouseDistanceX * mouseDistanceX + mouseDistanceY * mouseDistanceY);
+                
+                // Calculate text attraction (strongest nearby point)
+                let textForceX = 0;
+                let textForceY = 0;
+                let closestDistance = Infinity;
+                
+                textAttractors.forEach(point => {
+                    const dx = point.x - ballX;
+                    const dy = point.y - ballY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        textForceX = dx * point.strength;
+                        textForceY = dy * point.strength;
+                    }
+                });
+                
+                // Combine forces (mouse + text)
+                let totalForceX = 0;
+                let totalForceY = 0;
+                
+                // Mouse attraction (only when close)
+                if (mouseDistance < 200) {
+                    const mouseStrength = ball.speed * (1 - mouseDistance / 200);
+                    totalForceX += mouseDistanceX * mouseStrength;
+                    totalForceY += mouseDistanceY * mouseStrength;
+                }
+                
+                // Text attraction (always active but weaker)
+                const textStrength = 0.1;
+                totalForceX += textForceX * textStrength;
+                totalForceY += textForceY * textStrength;
+                
+                // Apply movement
+                const newX = ball.x + totalForceX;
+                const newY = ball.y + totalForceY;
+                
+                ball.element.style.transform = `translate(${newX - ball.x}px, ${newY - ball.y}px)`;
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const newRect = container.getBoundingClientRect();
+            rect.width = newRect.width;
+            rect.height = newRect.height;
+            
+            // Update text attractor positions
+            textAttractors.forEach((point, i) => {
+                point.x = newRect.width/2 - 100 + i * 40;
+                point.y = newRect.height/2;
+            });
+        });
+    });
+</script>
+
+<div class="divider"></div>
 
 <footer class="copyright">
     <p>&copy; 2025 Quizzy. All Rights Reserved.</p>
